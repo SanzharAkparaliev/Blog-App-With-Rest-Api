@@ -1,6 +1,7 @@
 package com.spring.blogappapis.impl;
 
 import com.spring.blogappapis.entities.User;
+import com.spring.blogappapis.exceptions.ResourceNotFoundException;
 import com.spring.blogappapis.payloads.UserDto;
 import com.spring.blogappapis.repositories.UserRepository;
 import com.spring.blogappapis.services.UserService;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -22,23 +24,37 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto updateUser(UserDto user, Long userId) {
-        return null;
+    public UserDto updateUser(UserDto userDto, Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() ->
+                new ResourceNotFoundException("User"," Id",userId));
+
+        user.setName(userDto.getName());
+        user.setEmail(userDto.getEmail());
+        user.setPassword(userDto.getPassword());
+        user.setAbout(userDto.getAbout());
+
+        User updateUser = this.userRepository.save(user);
+        UserDto userDto1 = this.userToDto(updateUser);
+        return userDto1;
     }
 
     @Override
     public UserDto getUserById(Long userId) {
-        return null;
+        User user = this.userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User","Id",userId));
+        return this.userToDto(user);
     }
 
     @Override
     public List<UserDto> getAllUsers() {
-        return null;
+        List<User> users = this.userRepository.findAll();
+        List<UserDto> userDtos = users.stream().map(user -> this.userToDto(user)).collect(Collectors.toList());
+        return userDtos;
     }
 
     @Override
     public void deleteUser(Long userId) {
-
+        User user = this.userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User" ,"Id", userId));
+        this.userRepository.delete(user);
     }
 
     private User dtoToUser(UserDto userDto){
@@ -46,7 +62,7 @@ public class UserServiceImpl implements UserService {
         user.setId(userDto.getId());
         user.setName(userDto.getName());
         user.setEmail(userDto.getEmail());
-        user.setPassword(user.getPassword());
+        user.setPassword(userDto.getPassword());
         user.setAbout(userDto.getAbout());
         return user;
     }

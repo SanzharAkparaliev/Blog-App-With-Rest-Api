@@ -13,7 +13,7 @@ public interface PostService {
     void deletePost(Long postId);
     List<Post> getPosts();
     PostDto getPostById(Long postId);
-    List<Post> getPostsByCategory(Category category);
-    List<Post> getPostsByUser(User user);
+    List<PostDto> getPostsByCategory(Long categoryId);
+    List<PostDto> getPostsByUser(Long userId);
     List<Post> searchPosts(String keyword);
 }

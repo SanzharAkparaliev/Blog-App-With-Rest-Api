@@ -10,7 +10,7 @@ public interface PostService {
     PostDto createPost(PostDto post,Long userId,Long categoryId);
     PostDto updatePost(PostDto postDto,Long postId);
     void deletePost(Long postId);
-    PostResponse getPosts(int pageNumber, int pageSize);
+    PostResponse getPosts(int pageNumber, int pageSize,String sortBy,String sortDir);
     PostDto getPostById(Long postId);
     List<PostDto> getPostsByCategory(Long categoryId);
     List<PostDto> getPostsByUser(Long userId);

@@ -17,7 +17,7 @@ import java.util.Date;
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long PostId;
+    private Long postId;
 
     @Column(name = "post_title",length = 100,nullable = false)
     private String title;

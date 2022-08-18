@@ -12,6 +12,7 @@ import com.spring.blogappapis.repositories.UserRepository;
 import com.spring.blogappapis.services.PostService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import org.springframework.data.domain.Page;
@@ -67,8 +68,10 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostResponse getPosts(int pageNumber, int pageSize) {
-        Pageable pageable = PageRequest.of(pageNumber,pageSize);
+    public PostResponse getPosts(int pageNumber, int pageSize,String sortBy,String sortDir) {
+        Sort sort = (sortDir.equalsIgnoreCase("asc")?Sort.by(sortBy).ascending():Sort.by(sortBy).descending());
+
+        Pageable pageable = PageRequest.of(pageNumber,pageSize,sort);
         Page<Post> postPage = this.postRepository.findAll(pageable);
         List<Post> allposts = postPage.getContent();
         List<PostDto> postDtos = allposts.stream().map(post -> modelMapper.map(post,PostDto.class)).collect(Collectors.toList());

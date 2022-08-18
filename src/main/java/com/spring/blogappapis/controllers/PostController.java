@@ -1,5 +1,6 @@
 package com.spring.blogappapis.controllers;
 
+import com.spring.blogappapis.config.AppConstants;
 import com.spring.blogappapis.payloads.ApiResponse;
 import com.spring.blogappapis.payloads.PostDto;
 import com.spring.blogappapis.payloads.PostResponse;
@@ -37,10 +38,10 @@ public class PostController {
     }
 
     @GetMapping("/posts")
-    public ResponseEntity<PostResponse> getAllPost(@RequestParam(value = "pageNumber",defaultValue = "0",required = false) Integer pageNumber ,
-                                                   @RequestParam(value = "pageSize",defaultValue = "10",required = false ) Integer pageSize,
-                                                   @RequestParam(value = "sortBy" ,defaultValue = "postId",required = false) String sortBy,
-                                                   @RequestParam(value = "sortDir",defaultValue = "asc",required = false) String sortDir
+    public ResponseEntity<PostResponse> getAllPost(@RequestParam(value = "pageNumber",defaultValue = AppConstants.PAGE_NUMBER,required = false) Integer pageNumber ,
+                                                   @RequestParam(value = "pageSize",defaultValue = AppConstants.PAGE_SIZE,required = false ) Integer pageSize,
+                                                   @RequestParam(value = "sortBy" ,defaultValue = AppConstants.SORT_BY,required = false) String sortBy,
+                                                   @RequestParam(value = "sortDir",defaultValue = AppConstants.SORT_DIR,required = false) String sortDir
                                                    ){
         PostResponse postList = this.postService.getPosts(pageNumber,pageSize,sortBy,sortDir);
         return new ResponseEntity<>(postList,HttpStatus.OK);

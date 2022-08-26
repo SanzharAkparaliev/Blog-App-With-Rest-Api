@@ -1,5 +1,6 @@
 package com.spring.blogappapis.controllers;
 
+import com.spring.blogappapis.exceptions.ApiException;
 import com.spring.blogappapis.payloads.JwtAuthRequest;
 import com.spring.blogappapis.payloads.JwtAuthResponse;
 import com.spring.blogappapis.security.JwtTokenHelper;
@@ -48,7 +49,7 @@ public class AuthController {
            this.authenticationManager.authenticate(authenticationToken);
        }catch (BadCredentialsException e){
            log.error("Invalid Details");
-           throw new Exception("Invalid username or password !! ");
+           throw new ApiException("Invalid username or password !! ");
        }
     }
 }
